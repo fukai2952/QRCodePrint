@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import fr.greweb.reactnativeviewshot.RNViewShotPackage;
-import com.rnprint.RNPrint.RNPrintPackage;
+import com.christopherdro.RNPrint.RNPrintPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;

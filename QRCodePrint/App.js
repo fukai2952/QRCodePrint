@@ -9,31 +9,45 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  TouchableOpacity
 } from 'react-native';
+import RNPrint from 'react-native-print';
+import ViewShot,{ captureRef } from "react-native-view-shot";
+import QRCode from 'react-native-qrcode';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
 
-type Props = {};
-export default class App extends Component<Props> {
+export default class App extends Component{
+
+  printBarCode=()=>{
+    captureRef(this.qrcodeView,{
+            format: "png",
+           // quality: 0.8,
+            result:'data-uri'
+        }).then(data=>{
+            //Alert.alert(data);
+            console.log(data);
+            RNPrint.print({html:`<img src="${data}"  style='width:15em;'/> <p>欢迎扫我</p>`})
+        },eror=>{console.error("Oops, snapshot failed", error)})
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
+          <TouchableOpacity onPress={this.printBarCode}>
+              <View style={{padding:10,backgroundColor:'yellow'}}>
+                  <Text>Print</Text>
+              </View>
+            </TouchableOpacity>
+          <ViewShot ref={ref=>this.qrcodeView=ref} style={{justifyContent:'center'}}>
+            <QRCode
+              value={"http://www.baidu.com"}
+              size={200}
+              bgColor='purple'
+              fgColor='white'/>
+          </ViewShot>
       </View>
+      
     );
   }
 }
